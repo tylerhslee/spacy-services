@@ -8,14 +8,14 @@ import spacy
 
 MODELS = {
     'en_core_web_sm': spacy.load('en_core_web_sm'),
-    'en_core_web_md': spacy.load('en_core_web_md'),
-    'en_core_web_lg': spacy.load('en_core_web_lg'),
-    'de_core_news_sm': spacy.load('de_core_news_sm'),
-    'es_core_news_sm': spacy.load('es_core_news_sm'),
-    'pt_core_news_sm': spacy.load('pt_core_news_sm'),
-    'fr_core_news_sm': spacy.load('fr_core_news_sm'),
-    'it_core_news_sm': spacy.load('it_core_news_sm'),
-    'nl_core_news_sm': spacy.load('nl_core_news_sm')
+    # 'en_core_web_md': spacy.load('en_core_web_md'),
+    # 'en_core_web_lg': spacy.load('en_core_web_lg'),
+    # 'de_core_news_sm': spacy.load('de_core_news_sm'),
+    # 'es_core_news_sm': spacy.load('es_core_news_sm'),
+    # 'pt_core_news_sm': spacy.load('pt_core_news_sm'),
+    # 'fr_core_news_sm': spacy.load('fr_core_news_sm'),
+    # 'it_core_news_sm': spacy.load('it_core_news_sm'),
+    # 'nl_core_news_sm': spacy.load('nl_core_news_sm')
 }
 
 
@@ -25,6 +25,11 @@ def get_model_desc(nlp, model_name):
     lang_name = lang_cls.__name__
     model_version = nlp.meta['version']
     return '{} - {} (v{})'.format(lang_name, model_name, model_version)
+
+
+@hug.get('/')
+def index():
+    return "You're on!"
 
 
 @hug.get('/models')
@@ -55,8 +60,25 @@ def ent(text: str, model: str):
             for ent in doc.ents]
 
 
+@hug.get('/lemma')
+def lemma_get():
+    nlp = MODELS['en_core_web_sm']
+    doc = nlp('My name is Tyler.')
+    return [token.lemma_ for token in doc]
+
+
+@hug.post('/lemma')
+def lemma_post(text: str, model: str):
+    """Lemmatize the text"""
+    nlp = MODELS[model]
+    doc = nlp(text)
+    return [token.lemma_ for token in doc]
+
+
 if __name__ == '__main__':
+    print(lemma_get())
     import waitress
     app = hug.API(__name__)
     app.http.add_middleware(CORSMiddleware(app))
-    waitress.serve(__hug_wsgi__, port=8080)
+    waitress.serve(__hug_wsgi__)    # default port: 8080
+

@@ -1,0 +1,13 @@
+---
+runtime: python
+env: flexible
+service: spacy-api
+api_version: 1
+
+runtime_config:
+  python_version: 3
+
+# This is so so so so so important.
+# If you don't want gunicorn, use custom runtime environment.
+entrypoint: gunicorn -b :$PORT app:__hug_wsgi__
+
