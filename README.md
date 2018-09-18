@@ -14,3 +14,10 @@ see the API docs in the respective directories.
 | [`displacy`](displacy) | Serve a spaCy model and extract dependencies and named entities. | [🖼](https://explosion.ai/demos/displacy), [🖼](https://explosion.ai/demos/displacy-ent)|
 | [`sense2vec`](sense2vec) | Serve a [sense2vec](https://github.com/explosion/sense2vec) model with automatic sense detection. | [🖼](https://explosion.ai/demos/sense2vec)
 | [`matcher`](matcher) | Run a match pattern over a text and return the matches and tokens as JSON. | [🖼](https://explosion.ai/demos/matcher) |
+
+
+## Google Cloud App Engine (Python3 Flexible Environment)
+```bash
+$ gcloud app deploy spacy.yaml -v <VERSION>
+$ gcloud app browse -s <SERVICE>
+```
